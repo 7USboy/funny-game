@@ -1,0 +1,245 @@
+import pygame
+import random
+
+# 定义方块类型及其形状
+shapes = [
+    [[1, 1, 1], [0, 1, 0]],
+    [[0, 2, 2], [2, 2, 0]],
+    [[3, 3, 0], [0, 3, 3]],
+    [[4, 0, 0], [4, 4, 4]],
+    [[0, 0, 5], [5, 5, 5]],
+    [[6, 6], [6, 6]]
+]
+
+# 定义方块颜色
+colors = [
+    (0, 0, 0),
+    (255, 0, 0),
+    (0, 255, 0),
+    (0, 0, 255),
+    (255, 255, 0),
+    (255, 0, 255),
+    (0, 255, 255)
+]
+
+# 定义游戏区域尺寸
+board_width = 10
+board_height = 20
+cell_size = 30
+
+# 初始化Pygame
+pygame.init()
+
+# 创建游戏窗口
+screen = pygame.display.set_mode((board_width * cell_size, board_height * cell_size))
+pygame.display.set_caption("Tetris")
+
+# 定义游戏区域
+board = [[0 for x in range(board_width)] for y in range(board_height)]
+
+# 定义方块类
+class Block:
+    def __init__(self):
+        self.shape = random.choice(shapes)
+        self.color = random.randint(1, len(colors) - 1)
+        self.x = board_width // 2 - len(self.shape[0]) // 2
+        self.y = 0
+
+    # 旋转方块
+    def rotate(self):
+        self.shape = [[self.shape[y][x] for y in range(len(self.shape))] for x in range(len(self.shape[0]) - 1, -1, -1)]
+
+    # 检查方块是否与游戏区域发生碰撞
+    def collide(self):
+        for y in range(len(self.shape)):
+            for x in range(len(self.shape[0])):
+                if self.shape[y][x] and board[self.y + y][self.x + x]:
+                    return True
+        return False
+
+    # 将方块加入游戏区域
+    def join(self):
+        for y in range(len(self.shape)):
+            for x in range(len(self.shape[0])):
+                if self.shape[y][x]:
+                    board[self.y + y][self.x + x] = self.color
+
+    # 检查方块是否到达游戏区域底部
+    def reach_bottom(self):
+        return self.y + len(self.shape) == board_height or self.collide()
+
+    # 下移方块
+    def move_down(self):
+        self.y += 1
+
+    # 左移方块
+    def move_left(self):
+        self.x -= 1
+        if self.collide():
+            self.x += 1
+
+    # 右移方块
+    def move_right(self):
+        self.x += 1
+        if self.collide():
+            self.x -= 1
+
+# 定义游戏循环
+def game_loop():
+    # 创建方块
+    block = Block()
+
+    # 定义游戏结束标志和计时器
+    game_over = False
+    clock = pygame.time.Clock()
+
+    # 游戏循环
+    while not game_over:
+        # 处理游戏事件
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    block.move_left()
+                elif event.key == pygame.K_RIGHT:
+                    block.move_right()
+                elif event.key == pygame.K_UP:
+                    block.rotate()
+
+        # 下移方块
+        if block.reach_bottom():
+            block.join()
+            block = Block()
+
+        block.move_down()
+
+        # 检查是否有完整的行
+        for y in range(board_height - 1, -1, -1):
+            if all(board[y]):
+                for y2 in range(y, 0, -1):
+                    board[y2] = board[y2 - 1][:]
+                board[0] = [抱歉，上一条回答的代码示例被截断。以下是完整的Python和Pygame库编写的基本俄罗斯方块游戏代码示例，供您参考：
+
+```python
+import pygame
+import random
+
+# 定义方块类型及其形状
+shapes = [
+    [[1, 1, 1], [0, 1, 0]],
+    [[0, 2, 2], [2, 2, 0]],
+    [[3, 3, 0], [0, 3, 3]],
+    [[4, 0, 0], [4, 4, 4]],
+    [[0, 0, 5], [5, 5, 5]],
+    [[6, 6], [6, 6]]
+]
+
+# 定义方块颜色
+colors = [
+    (0, 0, 0),
+    (255, 0, 0),
+    (0, 255, 0),
+    (0, 0, 255),
+    (255, 255, 0),
+    (255, 0, 255),
+    (0, 255, 255)
+]
+
+# 定义游戏区域尺寸
+board_width = 10
+board_height = 20
+cell_size = 30
+
+# 初始化Pygame
+pygame.init()
+
+# 创建游戏窗口
+screen = pygame.display.set_mode((board_width * cell_size, board_height * cell_size))
+pygame.display.set_caption("Tetris")
+
+# 定义游戏区域
+board = [[0 for x in range(board_width)] for y in range(board_height)]
+
+# 定义方块类
+class Block:
+    def __init__(self):
+        self.shape = random.choice(shapes)
+        self.color = random.randint(1, len(colors) - 1)
+        self.x = board_width // 2 - len(self.shape[0]) // 2
+        self.y = 0
+
+    # 旋转方块
+    def rotate(self):
+        self.shape = [[self.shape[y][x] for y in range(len(self.shape))] for x in range(len(self.shape[0]) - 1, -1, -1)]
+
+    # 检查方块是否与游戏区域发生碰撞
+    def collide(self):
+        for y in range(len(self.shape)):
+            for x in range(len(self.shape[0])):
+                if self.shape[y][x] and board[self.y + y][self.x + x]:
+                    return True
+        return False
+
+    # 将方块加入游戏区域
+    def join(self):
+        for y in range(len(self.shape)):
+            for x in range(len(self.shape[0])):
+                if self.shape[y][x]:
+                    board[self.y + y][self.x + x] = self.color
+
+    # 检查方块是否到达游戏区域底部
+    def reach_bottom(self):
+        return self.y + len(self.shape) == board_height or self.collide()
+
+    # 下移方块
+    def move_down(self):
+        self.y += 1
+
+    # 左移方块
+    def move_left(self):
+        self.x -= 1
+        if self.collide():
+            self.x += 1
+
+    # 右移方块
+    def move_right(self):
+        self.x += 1
+        if self.collide():
+            self.x -= 1
+
+# 定义游戏循环
+def game_loop():
+    # 创建方块
+    block = Block()
+
+    # 定义游戏结束标志和计时器
+    game_over = False
+    clock = pygame.time.Clock()
+
+    # 游戏循环
+    while not game_over:
+        # 处理游戏事件
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    block.move_left()
+                elif event.key == pygame.K_RIGHT:
+                    block.move_right()
+                elif event.key == pygame.K_UP:
+                    block.rotate()
+
+        # 下移方块
+        if block.reach_bottom():
+            block.join()
+            block = Block()
+
+        block.move_down()
+
+        # 检查是否有完整的行
+        for y in range(board_height - 1, -1, -1):
+            if all(board[y]):
+                for y2 in range(y, 0, -1):
+                    board[y
